@@ -12,9 +12,54 @@ func TestIntToRoman(t *testing.T) {
 			expectError: true,
 		},
 		{
+			input:          0,
+			expectedOutput: "",
+		},
+		{
 			input:          1,
 			expectedOutput: "I",
 		},
+		{
+			input:          4,
+			expectedOutput: "IV",
+		},
+		{
+			input:          9,
+			expectedOutput: "IX",
+		},
+		{
+			input:          40,
+			expectedOutput: "XL",
+		},
+		{
+			input:          90,
+			expectedOutput: "XC",
+		},
+		{
+			input:          400,
+			expectedOutput: "CD",
+		},
+		{
+			input:          900,
+			expectedOutput: "CM",
+		},
+		{
+			input:          58,
+			expectedOutput: "LVIII",
+		},
+		{
+			input:          1994,
+			expectedOutput: "MCMXCIV",
+		},
+		{
+			input:          3999,
+			expectedOutput: "MMMCMXCIX",
+		},
+		// Maybe?
+		// {
+		// 	input:       4000,
+		// 	expectError: true,
+		// },
 	}
 
 	for _, tc := range testcases {
