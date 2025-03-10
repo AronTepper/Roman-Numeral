@@ -13,6 +13,28 @@ func TestIntToRomanOld(t *testing.T) {
 	runIntToRomanTestcases(t, roman.RomanConverterOld{})
 }
 
+func BenchmarkIntToRomanFast(b *testing.B) {
+	converter := roman.RomanConverterFast{}
+
+	for i := 0; i < b.N; i++ {
+		_, err := converter.IntToRoman(i)
+		if err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func BenchmarkIntToRomanOld(b *testing.B) {
+	converter := roman.RomanConverterOld{}
+
+	for i := 0; i < b.N; i++ {
+		_, err := converter.IntToRoman(i)
+		if err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
 // Define an unexported interface here as well so we can test different
 // implementations with the same func.
 type converter interface {
