@@ -5,12 +5,9 @@ import (
 	"strings"
 )
 
-type pivot struct {
-	value   int
-	numeral string
-}
+type RomanConverterFast struct{}
 
-func IntToRoman(number int) (string, error) {
+func (c RomanConverterFast) IntToRoman(number int) (string, error) {
 	if number < 0 {
 		return "", fmt.Errorf("invalid number")
 	}
@@ -42,9 +39,15 @@ func checkFunkyRomans(number int, one, five, ten string) string {
 	return one + ten
 }
 
-func IntToRomanOld(number int) (string, error) {
+type RomanConverterOld struct{}
+
+func (c RomanConverterOld) IntToRoman(number int) (string, error) {
+	type pivot struct {
+		value   int
+		numeral string
+	}
+
 	var piv = []pivot{
-		// {2000, "MM"},
 		{1000, "M"},
 		{900, "CM"},
 		{500, "D"},
@@ -67,12 +70,11 @@ func IntToRomanOld(number int) (string, error) {
 	}
 
 	for _, val := range piv {
-		fmt.Println(val)
 		for number >= val.value {
 			res += val.numeral
 			number -= val.value
 		}
 	}
 
-	return res, nil // fmt.Errorf("not implemented")
+	return res, nil
 }
