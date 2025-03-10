@@ -6,7 +6,20 @@ import (
 )
 
 func TestIntToRomanFast(t *testing.T) {
-	converter := roman.RomanConverterFast{}
+	runIntToRomanTestcases(t, roman.RomanConverterFast{})
+}
+
+func TestIntToRomanOld(t *testing.T) {
+	runIntToRomanTestcases(t, roman.RomanConverterOld{})
+}
+
+// Define an unexported interface here as well so we can test different
+// implementations with the same func.
+type converter interface {
+	IntToRoman(int) (string, error)
+}
+
+func runIntToRomanTestcases(t *testing.T, converter converter) {
 	for _, tc := range testcases {
 		res, err := converter.IntToRoman(tc.input)
 		if err != nil && !tc.expectError {
@@ -22,6 +35,12 @@ func TestIntToRomanFast(t *testing.T) {
 			t.Errorf("expected output '%s' for input '%d', but got '%s'", tc.expectedOutput, tc.input, res)
 		}
 	}
+}
+
+type testcase struct {
+	input          int
+	expectedOutput string
+	expectError    bool
 }
 
 var testcases = []testcase{
@@ -78,10 +97,4 @@ var testcases = []testcase{
 	// 	input:       4000,
 	// 	expectError: true,
 	// },
-}
-
-type testcase struct {
-	input          int
-	expectedOutput string
-	expectError    bool
 }
