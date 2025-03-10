@@ -7,7 +7,6 @@ import (
 	"njcejvbehrvbehr/roman"
 	"os"
 	"strconv"
-	"unicode"
 )
 
 type RomanConverter interface {
@@ -15,32 +14,31 @@ type RomanConverter interface {
 	RomanToInt(string) (int, error)
 }
 
-
 func main() {
+	res, err := intToRoman()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(res)
+}
+
+func intToRoman() (string, error) {
 	scan := bufio.NewScanner(os.Stdin)
 
 	fmt.Println("enter a number")
 	scan.Scan()
-	scanned := scan.Text() 
+	scanned := scan.Text()
 
-	conv, err := strconv.Atoi(scanned)
+	inputAsInt, err := strconv.Atoi(scanned)
+	if err != nil {
+		return "", err
+	}
+
 	converter := newRomanConverter()
-
-	if err != nil {
-
-		log.Fatal(err)
-		return
-	}
-	
-	res, err := converter.IntToRoman(conv)
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-	fmt.Println(res)
+	return converter.IntToRoman(inputAsInt)
 }
 
 func newRomanConverter() RomanConverter {
 	return roman.RomanConverterFast{}
 }
-

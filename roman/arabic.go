@@ -26,6 +26,7 @@ func (c RomanConverterFast) RomanToInt(numeral string) (int, error) {
 		v := rune(s[len(s)-1-i])
 
 		fmt.Println(s, i, v)
+
 		if romanMap[v] > lastValue {
 			res += romanMap[v]
 			lastValue = romanMap[v]
@@ -54,6 +55,17 @@ func (c RomanConverterFast) RomanToInt(numeral string) (int, error) {
 
 	fmt.Println("hoi")
 	return res, nil
+}
+
+func isValidRomanNumeral(s string) error {
+	if areDigits(s) {
+		return fmt.Errorf("cannot convert invalid Roman numeral, it contains digits: '%s'", s)
+	}
+	if !areLetters(s) {
+		return fmt.Errorf("cannot convert invalid Roman numeral, it does not contain letters only: '%s'", s)
+	}
+
+	return nil
 }
 
 func areDigits(s string) bool {
