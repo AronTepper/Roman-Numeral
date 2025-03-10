@@ -12,18 +12,21 @@ func (c RomanConverterFast) IntToRoman(number int) (string, error) {
 		return "", fmt.Errorf("invalid number")
 	}
 
-	thousands := number / 1000
-	hundreds := (number % 1000) / 100
-	tens := (number % 100) / 10
-	ones := number % 10
+	var rv string
+	if number >= 1000 {
+		rv += strings.Repeat("M", number/1000)
+	}
+	if number >= 100 {
+		rv += checkFunkyRomans((number%1000)/100, "C", "D", "M")
+	}
+	if number >= 10 {
+		rv += checkFunkyRomans((number%100)/10, "X", "L", "C")
+	}
+	if number > 0 {
+		checkFunkyRomans(number%10, "I", "V", "X")
+	}
 
-	res := ""
-	res += strings.Repeat("M", thousands)
-	res += checkFunkyRomans(hundreds, "C", "D", "M")
-	res += checkFunkyRomans(tens, "X", "L", "C")
-	res += checkFunkyRomans(ones, "I", "V", "X")
-
-	return res, nil // fmt.Errorf("not implemented")
+	return rv, nil // fmt.Errorf("not implemented")
 }
 
 func checkFunkyRomans(number int, one, five, ten string) string {
