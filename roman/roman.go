@@ -23,7 +23,7 @@ func (c RomanConverterFast) IntToRoman(number int) (string, error) {
 		rv += checkFunkyRomans((number%100)/10, "X", "L", "C")
 	}
 	if number > 0 {
-		checkFunkyRomans(number%10, "I", "V", "X")
+		rv += checkFunkyRomans(number%10, "I", "V", "X")
 	}
 
 	return rv, nil // fmt.Errorf("not implemented")
