@@ -25,23 +25,20 @@ func (c RomanConverterFast) RomanToInt(numeral string) (int, error) {
 
 	for i := range s {
 		v := rune(s[len(s)-1-i])
-
-		fmt.Println(s, i, v)
-
 		val, ok := romanMap[v]
 
 		if !ok {
-			return 0, fmt.Errorf("cannot convert invalid Roman numeral, it contains: '%v'", v)
+			return 0, fmt.Errorf("cannot convert invalid Roman numeral, it contains: '%v'", string(v))
 		}
 
 		if val < prevValue {
 			switch {
 			case (prevValue == 5 || prevValue == 10) && val != 1:
-				return 0, fmt.Errorf("invalid Roman numeral, it contains an illegal sequence: '%v'", v)
+				return 0, fmt.Errorf("invalid Roman numeral, it contains an illegal sequence: '%v'", string(v))
 			case (prevValue == 50 || prevValue == 100) && val != 10:
-				return 0, fmt.Errorf("invalid Roman numeral, it contains an illegal sequence: '%v'", v)
+				return 0, fmt.Errorf("invalid Roman numeral, it contains an illegal sequence: '%v'", string(v))
 			case (prevValue == 500 || prevValue == 1000) && val != 100:
-				return 0, fmt.Errorf("invalid Roman numeral, it contains an illegal sequence: '%v'", v)
+				return 0, fmt.Errorf("invalid Roman numeral, it contains an illegal sequence: '%v'", string(v))
 			}
 			res -= val
 		} else {
@@ -54,12 +51,12 @@ func (c RomanConverterFast) RomanToInt(numeral string) (int, error) {
 
 		if val == prevValue {
 			if val != 1 && val != 10 && val != 100 && val != 1000 {
-				return 0, fmt.Errorf("invalid Roman numeral, it contains 2 sequential: '%v'", v)
+				return 0, fmt.Errorf("invalid Roman numeral, it contains 2 sequential: '%v'", string(v))
 			}
 			repeatCount++
 		}
 		if v != 'M' && repeatCount > 2 {
-			return 0, fmt.Errorf("invalid Roman numeral, it contains more than 3 sequential: '%v'", v)
+			return 0, fmt.Errorf("invalid Roman numeral, it contains more than 3 sequential: '%v'", string(v))
 		}
 
 		prevValue = val
@@ -68,7 +65,9 @@ func (c RomanConverterFast) RomanToInt(numeral string) (int, error) {
 	return res, nil
 }
 
-func (c RomanConverterFast) RomanToIntRegex(s string) (int, error) {
+type RomanConverterRegEx struct{}
+
+func (c RomanConverterRegEx) RomanToIntRegex(s string) (int, error) {
 	romanMap := map[rune]int{
 		'I': 1,
 		'V': 5,
