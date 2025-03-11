@@ -24,17 +24,18 @@ func TestIntToRoman(t *testing.T) {
 	}
 }
 
+// @Aljosja why 0 byte/op? 2333 ns/op	       0 B/op	       0 allocs/op
 func BenchmarkRomanToInt(b *testing.B) {
 	converter := roman.RomanConverterFast{}
 
-	romanNumerals := make([]string, 100000)
-	for i := 1; i < 100000; i++ {
+	romanNumerals := make([]string, 1000000)
+	for i := 1; i < 1000000; i++ {
 		v, _ := converter.IntToRoman(i)
 		romanNumerals[i-1] = v
 	}
 
-	for i := 0; i < b.N; i++ {
-		_, err := converter.RomanToInt(romanNumerals[i%100000])
+	for i := 0; b.Loop(); i++ {
+		_, err := converter.RomanToInt(romanNumerals[i%1000000])
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -45,14 +46,14 @@ func BenchmarkRomanToIntRegEx(b *testing.B) {
 	seedConverter := roman.RomanConverterFast{}
 	converter := roman.RomanConverterRegEx{}
 
-	romanNumerals := make([]string, 100000)
-	for i := 1; i < 100000; i++ {
+	romanNumerals := make([]string, 1000000)
+	for i := 1; i < 1000000; i++ {
 		v, _ := seedConverter.IntToRoman(i)
 		romanNumerals[i-1] = v
 	}
 
-	for i := 0; i < b.N; i++ {
-		_, err := converter.RomanToIntRegex(romanNumerals[i%100000])
+	for i := 0; b.Loop(); i++ {
+		_, err := converter.RomanToIntRegex(romanNumerals[i%1000000])
 		if err != nil {
 			b.Fatal(err)
 		}

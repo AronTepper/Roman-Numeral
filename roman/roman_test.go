@@ -16,8 +16,8 @@ func TestIntToRomanOld(t *testing.T) {
 func BenchmarkIntToRomanFast(b *testing.B) {
 	converter := roman.RomanConverterFast{}
 
-	for i := 0; i < b.N; i++ {
-		_, err := converter.IntToRoman(i % 100000)
+	for i := 0; b.Loop(); i++ {
+		_, err := converter.IntToRoman(i)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -27,8 +27,8 @@ func BenchmarkIntToRomanFast(b *testing.B) {
 func BenchmarkIntToRomanOld(b *testing.B) {
 	converter := roman.RomanConverterOld{}
 
-	for i := 0; i < b.N; i++ {
-		_, err := converter.IntToRoman(i % 100000)
+	for i := 0; b.Loop(); i++ {
+		_, err := converter.IntToRoman(i)
 		if err != nil {
 			b.Fatal(err)
 		}
