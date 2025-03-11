@@ -51,6 +51,7 @@ func (c RomanConverterFast) RomanToInt(numeral string) (int, error) {
 		if val != prevValue {
 			repeatCount = 0
 		}
+
 		if val == prevValue {
 			if val != 1 && val != 10 && val != 100 && val != 1000 {
 				return 0, fmt.Errorf("invalid Roman numeral, it contains 2 sequential: '%v'", v)
