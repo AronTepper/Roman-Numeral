@@ -15,12 +15,30 @@ type RomanConverter interface {
 }
 
 func main() {
-	res, err := intToRoman()
-	if err != nil {
-		log.Fatal(err)
+	scan := bufio.NewScanner(os.Stdin)
+
+	fmt.Println("Roman to Int (R) or int to roman (I)?")
+	scan.Scan()
+	scanned := scan.Text()
+	switch scanned {
+	case "I":
+		res, err := intToRoman()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println(res)
+	case "R":
+		res, err := romanToInt()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println(res)
+	default:
+		fmt.Printf("Invalid operation. Enter either a 'R' or 'I'. Your input was: '%s'", scanned)
 	}
 
-	fmt.Println(res)
 }
 
 func intToRoman() (string, error) {
@@ -37,6 +55,17 @@ func intToRoman() (string, error) {
 
 	converter := newRomanConverter()
 	return converter.IntToRoman(inputAsInt)
+}
+
+func romanToInt() (int, error) {
+	scan := bufio.NewScanner(os.Stdin)
+
+	fmt.Println("enter a Roman numeral")
+	scan.Scan()
+	scanned := scan.Text()
+
+	converter := newRomanConverter()
+	return converter.RomanToInt(scanned)
 }
 
 func newRomanConverter() RomanConverter {
