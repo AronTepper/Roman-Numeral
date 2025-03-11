@@ -1,7 +1,6 @@
 package roman_test
 
 import (
-	"math/rand"
 	"njcejvbehrvbehr/roman"
 	"testing"
 )
@@ -28,41 +27,37 @@ func TestIntToRoman(t *testing.T) {
 func BenchmarkRomanToInt(b *testing.B) {
 	converter := roman.RomanConverterFast{}
 
-	romanNumerals := make([]string, 3999)
-	for i := 1; i <= 3999; i++ {
+	romanNumerals := make([]string, 100000)
+	for i := 1; i < 100000; i++ {
 		v, _ := converter.IntToRoman(i)
 		romanNumerals[i-1] = v
 	}
 
 	for i := 0; i < b.N; i++ {
-		randomIndex := rand.Intn(len(romanNumerals))
-		_, err := converter.RomanToInt(romanNumerals[randomIndex])
+		_, err := converter.RomanToInt(romanNumerals[i%100000])
 		if err != nil {
 			b.Fatal(err)
 		}
 	}
 }
 
+func BenchmarkRomanToIntRegEx(b *testing.B) {
+	seedConverter := roman.RomanConverterFast{}
+	converter := roman.RomanConverterRegEx{}
 
-// func BenchmarkRomanToIntRegEx(b *testing.B) {
-// 	converter := roman.RomanConverterRegEx{}
+	romanNumerals := make([]string, 100000)
+	for i := 1; i < 100000; i++ {
+		v, _ := seedConverter.IntToRoman(i)
+		romanNumerals[i-1] = v
+	}
 
-// 	romanNumerals := make([]string, 3999)
-// 	for i := 1; i <= 3999; i++ {
-// 		v, _ := converter.RomanToIntRegex(i)
-// 		romanNumerals[i-1] = v
-// 	}
-
-// 	for i := 0; i < b.N; i++ {
-// 		randomIndex := rand.Intn(len(romanNumerals))
-// 		_, err := converter.RomanToInt(romanNumerals[randomIndex])
-// 		if err != nil {
-// 			b.Fatal(err)
-// 		}
-// 	}
-// }
-
-
+	for i := 0; i < b.N; i++ {
+		_, err := converter.RomanToIntRegex(romanNumerals[i%100000])
+		if err != nil {
+			b.Fatal(err)
+		}
+	}
+}
 
 var testcasesArab = []testcaseArab{
 	{

@@ -101,7 +101,7 @@ func (c RomanConverterRegEx) RomanToIntRegex(s string) (int, error) {
 }
 
 func isValidRoman(s string) bool {
-	validRomanPattern := `^(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$`
+	validRomanPattern := `^M*(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$`
 	matched, _ := regexp.MatchString(validRomanPattern, s)
 	return matched
 }
