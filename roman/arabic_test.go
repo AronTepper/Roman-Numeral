@@ -25,6 +25,17 @@ func TestIntToRoman(t *testing.T) {
 }
 
 
+func BenchmarkRomanToInt(b *testing.B) {
+	converter := roman.RomanConverterFast{}
+
+	for i := 0; i < b.N; i++ {
+		_, err := converter.IntToRoman(i % 100000)
+		if err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
 
 var testcasesArab = []testcaseArab{
 	{

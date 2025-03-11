@@ -10,8 +10,6 @@ func (c RomanConverterFast) RomanToInt(numeral string) (int, error) {
 	res := 0
 	prevValue := 0
 	repeatCount := 0
-	topValue := 0
-	// usedValues := new([7]rune)
 
 	romanMap := map[rune]int{
 		'I': 1,
@@ -36,30 +34,36 @@ func (c RomanConverterFast) RomanToInt(numeral string) (int, error) {
 			return 0, fmt.Errorf("cannot convert invalid Roman numeral, it contains: '%v'", v)
 		}
 
-		if v != 'M' && val == prevValue && repeatCount == 4 {
-			return 0, fmt.Errorf("invalid Roman numeral, it contains more than 3 sequential: '%v'", v)
+		if val < prevValue {
+			switch {
+			case (prevValue == 5 || prevValue == 10) && val != 1:
+				return 0, fmt.Errorf("invalid Roman numeral, it contains an illegal sequence: '%v'", v)
+			case (prevValue == 50 || prevValue == 100) && val != 10:
+				return 0, fmt.Errorf("invalid Roman numeral, it contains an illegal sequence: '%v'", v)
+			case (prevValue == 500 || prevValue == 1000) && val != 100:
+				return 0, fmt.Errorf("invalid Roman numeral, it contains an illegal sequence: '%v'", v)
+			}
+			res -= val
+		} else {
+			res += val
 		}
 
-		if val > topValue {
-			res += val
-			topValue = val
-			continue
-		}
-		if val > prevValue {
-			res -= val
-		}
-		if val == prevValue {
+		if val != prevValue {
 			repeatCount = 0
-			res += val
 		}
 		if val == prevValue {
+			if val != 1 && val != 10 && val != 100 && val != 1000 {
+				return 0, fmt.Errorf("invalid Roman numeral, it contains 2 sequential: '%v'", v)
+			}
 			repeatCount++
+		}
+		if v != 'M' && repeatCount > 2 {
+			return 0, fmt.Errorf("invalid Roman numeral, it contains more than 3 sequential: '%v'", v)
 		}
 
 		prevValue = val
 	}
 
-	fmt.Println("hoi")
 	return res, nil
 }
 
